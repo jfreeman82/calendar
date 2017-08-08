@@ -1,5 +1,5 @@
 <?php
-namespace FreeBlog\Modules\DB;
+namespace Calendar\Modules\DB;
 
 class DBC {
 
@@ -33,7 +33,10 @@ class DBC {
     public function CloseDB() {
         $this->mysqli->close();
     }
-
+    public function close() {
+        $this->CloseDB();
+    }
+    
     public function clearText($text) {
         $text = trim($text);
         return $this->mysqli->real_escape_string($text);
