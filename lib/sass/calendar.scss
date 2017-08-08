@@ -19,6 +19,12 @@ table {
       text-align: right;
       width: 80px;
     
+      a {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+      
       &.today {
         background-color: rgba(0,55,160,0.4);
       }
@@ -29,4 +35,10 @@ table {
       
     }
   }
+}
+
+input {
+  background-color: #ddd;
+  border: thin solid black;
+  border-radius: 2px;
 }
