@@ -1,6 +1,8 @@
 <?php
 namespace Calendar\mvc;
 
+use Calendar\Modules\Time as Time;
+
 use Calendar\Modules\DB\DBC as DBC;
 /**
  * Description of Model
@@ -9,25 +11,42 @@ use Calendar\Modules\DB\DBC as DBC;
  */
 class Model {
 
-  public function __construct() {}
+    public function __construct() {}
+
+    /* 
+     *      FORM PROCESSORS
+     */
   
-  
-  public function articles_lastx($x) {
-    $dbc = new DBC();
-    $sql = "SELECT id FROM articles ORDER BY gendate,title DESC LIMIT $x ;";
-    $q = $dbc->query($sql) or die("ERROR Model - ".$dbc->error());
-    $out = array();
-    while ($row = $q->fetch_assoc()) {
-      $article = new Article($row['id']);
-      //var_dump($article->dataArray());
-      array_push($out, $article->dataArray());
+    // NEW EVENT FORM PROCESSOR
+    public function fp_event_new(): Array
+    {
+        if (filter_input(INPUT_POST, 'addevent') == "go") {
+            // assuming all checks were done by javascript
+            $ne_day = filter_input(INPUT_POST, 'ne_day');
+            $ne_month = filter_input(INPUT_POST, 'ne_month');
+            $ne_year = filter_input(INPUT_POST, 'ne_year');
+            $ne_title = filter_input(INPUT_POST, 'ne_title');
+            $sql_date = date("Y-m-d H:i:s", Time\dmyToTime($ne_day,$ne_month,$ne_year));
+            $sql = "INSERT INTO events (event_datetime, title, date_added)  
+                    VALUES ('$sql_date','$ne_title',NOW());";
+            $dbc = new DBC();
+            if ($dbc->query($sql)) {
+                return array('status' => '1');
+            }
+            else {
+                return array('status' => 'warning',
+                            'warning' => $dbc->error());
+            }
+        }
+        else {
+            return array('status' => '0');
+        }
     }    
-    return $out;
-  }
-  
-  public function article($aid) {
-    $article = new Article($aid);
-    return $article->dataArray();
-  }
-  
+    
+    // EDIT EVENT FORM PROCESSOR
+    
+    // DELETE EVENT FORM PROCESSOR
+    
+    // OTHER FUNCS
+    
 }

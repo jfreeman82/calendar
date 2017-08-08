@@ -21,6 +21,17 @@ class Controller {
     }
     
     public function invoke() {
-        $this->view->front();
+        if (filter_input(INPUT_GET, 'action') == "new") {
+            $check = $this->model->fp_event_new();
+            if ($check['status'] == '1') {  
+                header("Location: index.php");                
+            }
+            else {
+                die($check['status']);
+            }
+        }
+        else {
+            $this->view->front();
+        }
     }
 }
