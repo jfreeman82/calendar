@@ -19,3 +19,6 @@ require_once 'lib/modules/DBC.php';
 require_once 'lib/mvc/controller/Controller.php';
 require_once 'lib/mvc/model/Model.php';
 require_once 'lib/mvc/view/View.php';
+
+require_once 'lib/modules/Event.php';
+require_once 'lib/modules/time.php';

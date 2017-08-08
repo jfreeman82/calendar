@@ -9,9 +9,18 @@ table tr td {
   height: 80px;
   text-align: right;
   width: 80px; }
+  table tr td a {
+    display: block;
+    height: 100%;
+    width: 100%; }
   table tr td.today {
     background-color: rgba(0, 55, 160, 0.4); }
   table tr td.filler {
     background-color: #ccc; }
+
+input {
+  background-color: #ddd;
+  border: thin solid black;
+  border-radius: 2px; }
 
 /*# sourceMappingURL=calendar.css.map */

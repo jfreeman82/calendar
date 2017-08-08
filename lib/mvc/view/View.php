@@ -1,6 +1,8 @@
 <?php
 namespace Calendar\mvc;
 
+use Calendar\Modules\Time as Time;
+
 /**
  * Description of View
  *
@@ -71,7 +73,7 @@ class View {
         $out = '
     <div class="container">
         <div class="row">
-            <h2 class="page-header">'.date('F', $this->dmyToTime($thisday,$thismonth,$thisyear)).' '.$thisyear.'</div>
+            <h2 class="page-header">'.date('F', Time\dmyToTime($thisday,$thismonth,$thisyear)).' '.$thisyear.'</div>
              <table class="table">
                 <tr>';
         for ($i=0; $i<7; $i++) {
@@ -84,7 +86,7 @@ class View {
                 <tr>';
         // Day 1
         // now we know how much filler we need for the first one.
-        $firstdayoftheweek = date('N',$this->dmyToTime(1));
+        $firstdayoftheweek = date('N', Time\dmyToTime(1));
         $filler = $firstdayoftheweek - 1;
         
         for ($i=0; $i<$filler; $i++) {
@@ -96,8 +98,8 @@ class View {
         $day = 1;
         //echo 'time = '.$thisyear.$thismonth.$this->fullDay($day);
         //echo '<br/>return value = '.$this->validateDate($thisyear.$thismonth.$this->fullDay($day));
-        while ($this->validateDate($thisyear.$thismonth.$this->fullday($day))) {
-            if ($this->dayNumber($day, $thismonth, $thisyear) == 1) { 
+        while (Time\validateDate($thisyear.$thismonth.Time\fullday($day))) {
+            if (Time\dayNumber($day, $thismonth, $thisyear) == 1) { 
                 $out .= '
                 <tr>';                 
             }
@@ -105,8 +107,23 @@ class View {
                     <td';
             // check if today
             if ($day == $thisday) { $out .= ' class="today" '; }
-            $out .= '>'.$day.'</td>';
-            if ($this->dayNumber($day, $thismonth, $thisyear) == 7) { 
+            
+            // check days events
+            $sql = "SELECT id, title 
+                    FROM events 
+                    WHERE DAY(event_datetime) = '$day' 
+                        AND MONTH(event_datetime) = '$thismonth' 
+                        AND YEAR(event_datetime) = '$thisyear';";
+            $dbc = new \Calendar\Modules\DB\DBC();
+            $q = $dbc->query($sql) or die("ERROR View - ".$dbc->error());
+            
+            $out .= '>
+                <a href="#" data-toggle="modal" data-target="#myModal">'.$day;
+            while ($row = $q->fetch_assoc()) {
+                $out .= '<div class="event"><a href="index.php?view=event&eid='.$row['id'].'">'.$row['title'].'</a></div>';
+            }
+            $out .= '</a></td>';
+            if (Time\dayNumber($day, $thismonth, $thisyear) == 7) { 
                 $out .= '
                 </tr>';                
             } 
@@ -115,7 +132,7 @@ class View {
         
         // Trailing Filler
         $lastday = $day - 1;
-        $lastdayoftheweek = $this->dayNumber($lastday, $thismonth, $thisyear);
+        $lastdayoftheweek = Time\dayNumber($lastday, $thismonth, $thisyear);
         if ($lastdayoftheweek != 7) {
             $filler = 7 - $lastdayoftheweek;
             for ($i=0; $i<$filler; $i++) {
@@ -129,54 +146,43 @@ class View {
         $out .= '
            </table>
         </div>
+        
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Event</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="index.php?action=new" method="POST">
+                            <div class="form-group">
+                                date: 
+                                    <input type="text" size="2" name="ne_day" />
+                                    <input type="text" size="2" name="ne_month" />
+                                    <input type="text" size="4" name="ne_year" />
+                            </div>
+                            <div class="form-group">
+                                Title
+                                    <input type="text" name="ne_title" />
+                            </div>
+                            <input type="hidden" name="addevent" value="go" />
+                            <input type="submit" class="btn btn-primary"  value="Add Event" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>';
         return $out;
-    }
-    
-    private function dmyToTime(string $day = "",string $month = "",string $year = "")
-    {
-        if ($day == "")     { $day      = $this->currentDay();      }
-        if ($month == "")   { $month    = $this->currentMonth();    }
-        if ($year == "")    { $year     = $this->currentYear();     }
-        
-        // check length
-        if (strlen($day) == 1)      { $day      = '0'.$day;     }
-        if (strlen($month) == 1)    { $month    = '0'.$month;   }
-        if (strlen($year) == 2)     { $year     = '20'.$year;   }
-        
-        $time = $year.$month.$day;
-        return strtotime($time);
-    }
-    
-    private function validateDate($date): bool
-    {
-        $d = \DateTime::createFromFormat('Ymd', $date);
-        return $d && $d->format('Ymd') === $date;
-    }
-    private function dayNumber($day,$month,$year): int
-    {
-        return date('N',$this->dmyToTime($day,$month,$year));
-    }
-    
-    private function currentDay() 
-    {
-        return date('d');
-    }           
-    private function currentMonth()
-    {
-        return date('m');
-    }
-    private function currentYear()
-    {
-        return date('Y');
-    }
-    
-    private function fullDay(string $day): string
-    {
-        if (strlen($day) == 1)      { $day      = '0'.$day;     }
-        return $day;
-    }
-      
+    }  
     
     /* 
      * SETTERS
