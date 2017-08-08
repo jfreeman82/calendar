@@ -1,0 +1,32 @@
+/* 
+    Created on : Aug 8, 2017, 12:29:07 PM
+    Author     : myrmidex
+*/
+
+
+table {
+  
+  tr {
+  
+    
+    th {
+      text-align: center;
+    }
+  
+    td {
+      border: thin solid #ccc;
+      height: 80px;
+      text-align: right;
+      width: 80px;
+    
+      &.today {
+        background-color: rgba(0,55,160,0.4);
+      }
+      
+      &.filler {
+        background-color: #ccc;
+      }
+      
+    }
+  }
+}
