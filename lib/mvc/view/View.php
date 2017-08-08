@@ -105,7 +105,8 @@ class View {
                     <td';
             // check if today
             if ($day == $thisday) { $out .= ' class="today" '; }
-            $out .= '>'.$day.'</td>';
+            $out .= '>
+                <a href="#" data-toggle="modal" data-target="#myModal">'.$day.'</a></td>';
             if ($this->dayNumber($day, $thismonth, $thisyear) == 7) { 
                 $out .= '
                 </tr>';                
@@ -128,6 +129,40 @@ class View {
         
         $out .= '
            </table>
+        </div>
+        
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Event</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="index.php?action=new" method="POST">
+                            <div class="form-group">
+                                date: 
+                                    <input type="text" size="2" name="ne_day" />
+                                    <input type="text" size="2" name="ne_month" />
+                                    <input type="text" size="4" name="ne_year" />
+                            </div>
+                            <div class="form-group">
+                                Title
+                                    <input type="text" name="ne_title" />
+                            </div>
+                            <input type="hidden" name="addevent" value="go" />
+                            <input type="submit" class="btn btn-primary"  value="Add Event" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>';
         return $out;
