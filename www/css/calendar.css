@@ -1,0 +1,17 @@
+/* 
+    Created on : Aug 8, 2017, 12:29:07 PM
+    Author     : myrmidex
+*/
+table tr th {
+  text-align: center; }
+table tr td {
+  border: thin solid #ccc;
+  height: 80px;
+  text-align: right;
+  width: 80px; }
+  table tr td.today {
+    background-color: rgba(0, 55, 160, 0.4); }
+  table tr td.filler {
+    background-color: #ccc; }
+
+/*# sourceMappingURL=calendar.css.map */
