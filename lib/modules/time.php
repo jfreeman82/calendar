@@ -1,6 +1,5 @@
 <?php
-namespace Calendar\Modules\Time;
-
+namespace freest\calendar\modules\Time;
 
 function dmyToTime(string $day = "",string $month = "",string $year = "")
 {

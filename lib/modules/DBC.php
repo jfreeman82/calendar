@@ -1,5 +1,5 @@
 <?php
-namespace Calendar\Modules\DB;
+namespace freest\modules\DB;
 
 class DBC {
 

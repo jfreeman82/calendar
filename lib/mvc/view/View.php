@@ -1,7 +1,8 @@
 <?php
-namespace Calendar\mvc;
+namespace freest\calendar\mvc\view;
 
-use Calendar\Modules\Time as Time;
+use freest\modules\DB\DBC as DBC;
+use freest\calendar\modules\Time as Time;
 
 /**
  * Description of View
@@ -31,7 +32,8 @@ class View {
         $this->page();
     }
   
-    private function page() {
+    private function page() 
+    {
         echo  '<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -114,7 +116,7 @@ class View {
                     WHERE DAY(event_datetime) = '$day' 
                         AND MONTH(event_datetime) = '$thismonth' 
                         AND YEAR(event_datetime) = '$thisyear';";
-            $dbc = new \Calendar\Modules\DB\DBC();
+            $dbc = new DBC();
             $q = $dbc->query($sql) or die("ERROR View - ".$dbc->error());
             
             $out .= '>

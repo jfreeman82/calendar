@@ -1,16 +1,16 @@
 <?php
-namespace Calendar\mvc;
+namespace freest\calendar\mvc\controller;
 
-use Calendar\mvc\Model as Model;
-use Calendar\mvc\View as View;
+use freest\calendar\mvc\model\Model as Model;
+use freest\calendar\mvc\view\View as View;
 
 /**
  * Description of Controller
  *
  * @author myrmidex
  */
-class Controller {
-
+class Controller 
+{
     private $model;
     private $view;
     
@@ -20,7 +20,8 @@ class Controller {
         $this->view = new View();
     }
     
-    public function invoke() {
+    public function invoke() 
+    {
         if (filter_input(INPUT_GET, 'action') == "new") {
             $check = $this->model->fp_event_new();
             if ($check['status'] == '1') {  

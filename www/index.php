@@ -1,7 +1,7 @@
 <?php
-namespace Calendar;
+namespace freest\calendar;
 
-use Calendar\mvc\Controller as Controller;
+use freest\calendar\mvc\controller\Controller as Controller;
 
 require '../config.php';
 

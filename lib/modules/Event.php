@@ -1,15 +1,15 @@
 <?php
-namespace Calendar\modules;
+namespace freest\calendar\modules;
 
-use Calendar\Modules\DB\DBC as DBC;
+use freest\modules\DB\DBC as DBC;
 
 /**
  * Description of Event
  *
  * @author myrmidex
  */
-class Event {
-
+class Event 
+{
     private $id;
     private $event_datetime;
     private $title;

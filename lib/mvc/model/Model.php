@@ -1,16 +1,16 @@
 <?php
-namespace Calendar\mvc;
+namespace freest\calendar\mvc\model;
 
-use Calendar\Modules\Time as Time;
+use freest\calendar\modules\Time as Time;
+use freest\modules\DB\DBC as DBC;
 
-use Calendar\Modules\DB\DBC as DBC;
 /**
  * Description of Model
  *
  * @author myrmidex
  */
-class Model {
-
+class Model 
+{
     public function __construct() {}
 
     /* 
